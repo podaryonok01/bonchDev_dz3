@@ -1,3 +1,4 @@
+// ДЗ №3 (исправленное)
 const btn = document.querySelector('#btn');
 const textareaComment = document.querySelector('#comment');
 const inputAuthor = document.querySelector('#comment_author');
@@ -18,7 +19,10 @@ class Comments {
             this.removeComment(newComment);
         })
         newComment.btnChange.addEventListener('click', () => {
-            this.changeComment(newComment);
+            if (!(document.querySelector('.btn_save'))){
+                this.changeComment(newComment);
+            }
+            
         })
     }
 
@@ -58,16 +62,20 @@ class Comments {
         textareaComment.value = newComment.comment;
         btn.style.display = 'none';
         inputAuthor.style.display = 'none';
+        document.querySelectorAll('.btn').forEach((elem)=>elem.style.display = 'none');
         let btnSaveChangge = document.createElement('button');
         btnSaveChangge.classList.add('btn');
+        btnSaveChangge.classList.add('btn_save');
         btnSaveChangge.innerText = 'Изменить';
         textareaComment.after(btnSaveChangge);
+        
 
         btnSaveChangge.addEventListener('click', () => {
             newComment.comment = textareaComment.value;
             textareaComment.value = '';
             btn.style.display = '';
             inputAuthor.style.display = '';
+            document.querySelectorAll('.btn').forEach((elem)=>elem.style.display = '');
             btnSaveChangge.remove();
 
             this.renderComments();
@@ -108,29 +116,8 @@ class Comment {
 
         this.btnDelete = document.createElement('button');
         this.btnChange = document.createElement('button');
+
     }
-
-    //редактирование комментария
-    changeComment() {
-        this.btnChange.addEventListener('click', () => {
-            textareaComment.value = this.comment;
-            btn.style.display = 'none';
-            inputAuthor.style.display = 'none';
-            let btnSaveChangge = document.createElement('button');
-            btnSaveChangge.classList.add('btn');
-            btnSaveChangge.innerText = 'Изменить';
-            textareaComment.after(btnSaveChangge);
-
-            btnSaveChangge.addEventListener('click', () => {
-                this.comment = textareaComment.value;
-                textareaComment.value = '';
-                btn.style.display = '';
-                inputAuthor.style.display = '';
-                btnSaveChangge.remove();
-            })
-        })
-    }    
-
 }
 
 const comments = new Comments;
